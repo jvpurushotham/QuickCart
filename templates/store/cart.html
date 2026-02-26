@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}My Cart – QuickCart{% endblock %}
+
+{% block content %}
+{% if items %}
+<div class = "cart-layout">
+
+  <!-- CART ITEMS -->
+  <div class = "cart-items">
+    <h2 style="font-size:1.2rem;font-weight:700;margin-bottom:16px;">🛒 My Cart ({{ cart.item_count }} items)</h2>
+    {% for item in items %}
+    
+    <div class = "cart-item" id="cart-item-{{ item.id }}">
+      <a href="{% url 'product_detail' item.product.id %}">
+        {% if item.product.image %}
+        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" />
+        {% else %}
+        <div style="width:72px;height:72px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:#fafafa;border-radius:8px;">🛒</div>
+        {% endif %}
+      </a>
+      <div class = "cart-item-info">
+        <div class = "name">{{ item.product.name }}</div>
+        <div class = "price">₹{{ item.product.discounted_price }} each</div>
+        <button class = "cart-item-remove" onclick="removeCartItem({{ item.id }})">Remove</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class = "qty-control" style="min-width:100px;">
+          <button onclick="cartUpdate({{ item.id }}, 'decrement')">−</button>
+          <span class = "cart-qty-val">{{ item.quantity }}</span>
+          <button onclick="cartUpdate({{ item.id }}, 'increment')">+</button>
+        </div>
+      </div>
+      <div class = "cart-item-subtotal" id="subtotal-{{ item.id }}">₹{{ item.subtotal }}</div>
+    </div>
+    {% endfor %}
+  
+  </div>
+
+  <!-- SUMMARY -->
+  <div class = "cart-summary">
+    <h3>Bill Summary</h3>
+    <div class = "summary-row"><span>Item total</span><span id="cart-total">₹{{ cart.total }}</span></div>
+    <div class = "summary-row"><span>Delivery fee</span><span style="color:var(--green);">FREE</span></div>
+    <div class = "summary-row" id="discount-row" style="display:none;color:var(--green);">
+      <span>Coupon discount</span><span>−₹<span id="discount-amount">0</span></span>
+    </div>
+    <div class = "summary-row total"><span>Total</span><span id="final-total">₹{{ cart.total }}</span></div>
+
+    <div class = "coupon-input">
+      <input type="text" id="coupon-input" placeholder="Enter coupon code" />
+      <button id="apply-coupon-btn">Apply</button>
+    </div>
+    <input type="hidden" id="hidden-coupon" value="" />
+
+    <div style="font-size:.8rem;color:var(--green);margin-bottom:8px;">⚡ Delivery in 10–20 minutes</div>
+    <a href="{% url 'checkout' %}">
+      <button class = "btn-checkout">Proceed to Checkout →</button>
+    </a>
+  </div>
+</div>
+
+{% else %}
+
+<div class = "empty-state" style="margin-top:40px;">
+  <div class = "empty-icon">🛒</div>
+  <h3>Your cart is empty</h3>
+  <p>Add some items to get started!</p>
+  <a href="{% url 'product_list' %}" class = "btn-go-shop">Start Shopping</a>
+</div>
+{% endif %}
+{% endblock %}
+
+
+
+
+

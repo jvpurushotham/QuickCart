@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Login – QuickCart{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+
+  <div class="auth-card">
+    <div style="text-align:center;margin-bottom:24px;">
+      <div style="font-size:2.5rem;">⚡</div>
+      <h2>Welcome back!</h2>
+      <p>Login to your QuickCart account</p>
+    </div>
+
+    <form method="post">
+      {% csrf_token %}
+
+      {% for field in form %}
+
+      <div class="form-group">
+        <label>{{ field.label }}</label>
+        {{ field }}
+        {% for err in field.errors %}
+        <div class="form-error">{{ err }}</div>
+
+        {% endfor %}
+      </div>
+
+      {% endfor %}
+
+      <button type="submit" class="btn-primary">Login →</button>
+    </form>
+
+    <div class="auth-link">
+      Don't have an account? <a href="{% url 'register' %}">Register here</a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+
+
+
+

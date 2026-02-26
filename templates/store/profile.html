@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %}My Profile – QuickCart{% endblock %}
+
+{% block content %}
+<div class = "page-container">
+  <div class = "profile-header">
+    <div class = "profile-avatar">{{ user.username|first|upper }}</div>
+    <div>
+      <h2>{{ user.get_full_name|default:user.username }}</h2>
+      <p>{{ user.email }}</p>
+      <p style = "margin-top:4px;font-size:.82rem;">Member since {{ user.date_joined|date:"M Y" }}</p>
+    </div>
+  </div>
+
+  <div style = "display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;">
+    <div class = "card" style = "text-align:center;">
+      <div style = "font-size:2rem;font-weight:800;color:var(--primary-dark);">{{ orders.count }}</div>
+      <div style = "color:var(--text-light);">Total Orders</div>
+    </div>
+    <div class = "card" style = "text-align:center;">
+      <a href="{% url 'wishlist' %}">
+        <div style = "font-size:2rem;font-weight:800;color:var(--red);">{{ wishlist_count }}</div>
+        <div style = "color:var(--text-light);">Wishlist Items</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ADDRESSES -->
+  <div class = "card" style = "margin-bottom:24px;">
+    <h2>📍 Saved Addresses</h2>
+    {% for addr in addresses %}
+    <div style = "padding:12px;border:1px solid var(--border);border-radius:10px;margin-bottom:10px;">
+      {{ addr.house_no }}, {{ addr.street }}, {{ addr.city }} – {{ addr.pincode }}
+    </div>
+    {% empty %}
+    <p style = "color:var(--text-light);">No saved addresses.</p>
+    {% endfor %}
+
+    <form method="post" action="{% url 'add_address' %}" style = "margin-top:16px;">
+      {% csrf_token %}
+      <div style = "display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <input name="house_no" class = "form-control" placeholder="House No." required />
+        <input name="street" class = "form-control" placeholder="Street" required style = "grid-column:span 2;" />
+        <input name="city" class = "form-control" placeholder="City" required />
+        <input name="pincode" class = "form-control" placeholder="Pincode" required />
+      </div>
+      <button type="submit" class = "btn-primary" style = "margin-top:12px;width:auto;padding:10px 20px;">Add Address</button>
+    </form>
+  </div>
+
+  <!-- RECENT ORDERS -->
+  <div class = "card">
+    <h2>📦 Recent Orders</h2>
+    {% for order in orders|slice:":5" %}
+    <div style = "display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);">
+      <div>
+        <div style = "font-weight:600;">Order #{{ order.id }}</div>
+        <div style = "color:var(--text-light);font-size:.85rem;">{{ order.created_at|date:"d M Y" }}</div>
+      </div>
+      <div style = "text-align:right;">
+        <span class = "order-status status-{{ order.status }}">{{ order.get_status_display }}</span>
+        <div style = "font-weight:700;margin-top:4px;">₹{{ order.total_price }}</div>
+      </div>
+      <a href="{% url 'order_detail' order.id %}" style = "color:var(--primary-dark);font-size:.85rem;font-weight:600;">Details →</a>
+    </div>
+    {% empty %}
+    <p style = "color:var(--text-light);">No orders yet. <a href="{% url 'product_list' %}">Start shopping!</a></p>
+    {% endfor %}
+    {% if orders.count > 5 %}
+    <a href="{% url 'order_list' %}" style = "display:block;margin-top:12px;font-size:.9rem;font-weight:600;color:var(--primary-dark);">View all {{ orders.count }} orders →</a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+
+
+
+
+

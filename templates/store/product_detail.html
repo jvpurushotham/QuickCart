@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% block title %}{{ product.name }} – QuickCart{% endblock %}
+
+{% block content %}
+<div class="product-detail-layout">
+  <!-- IMAGE -->
+  <div class="product-detail-img">
+    {% if product.image %}
+    <img src="{{ product.image.url }}" alt="{{ product.name }}" />
+    {% else %}
+    <span style="font-size:8rem;">🛒</span>
+    {% endif %}
+  </div>
+
+  <!-- INFO -->
+  <div class="product-detail-info">
+    <div style="font-size:.85rem;color:var(--text-light);margin-bottom:6px;">
+      <a href="{% url 'category_products' product.category.slug %}">{{ product.category.name }}</a>
+    </div>
+    <h1>{{ product.name }}</h1>
+
+    {% if avg_rating %}
+    <div class="rating">
+      <span class="stars">{% for i in "12345" %}{% if forloop.counter <= avg_rating|floatformat:"0"|add:"0" %}★{% else %}☆{% endif %}{% endfor %}</span>
+      {{ avg_rating|floatformat:1 }} ({{ reviews.count }} reviews)
+    </div>
+    {% endif %}
+
+    <div class="product-detail-price">
+      <span class="current">₹{{ product.discounted_price }}</span>
+      {% if product.discount %}
+      <span class="original">₹{{ product.price }}</span>
+      <span class="discount-pct">{{ product.discount }}% OFF</span>
+      {% endif %}
+    </div>
+
+    <div class="detail-delivery">
+      ⚡ <span>Estimated delivery: <strong>10–20 minutes</strong></span>
+    </div>
+
+    {% if product.description %}
+    <p class="description">{{ product.description }}</p>
+    {% endif %}
+
+    <div style="margin-bottom:12px;font-size:.9rem;">
+      Stock: <strong style="color:{% if product.in_stock %}var(--green){% else %}var(--red){% endif %}">
+        {% if product.in_stock %}{{ product.stock }} units available{% else %}Out of Stock{% endif %}
+      </strong>
+    </div>
+
+    <div class="detail-actions">
+      {% if product.in_stock %}
+      <div class="add-area" style="flex:1;" id="detail-add-area">
+        <button class="btn-primary" onclick="addToCart({{ product.id }}, this)" style="width:auto;padding:13px 28px;">🛒 Add to Cart</button>
+      </div>
+      {% else %}
+      <button class="btn-primary" disabled style="opacity:.5;cursor:not-allowed;">Out of Stock</button>
+      {% endif %}
+
+      <button class="btn-wishlist {% if in_wishlist %}active{% endif %}"
+              onclick="toggleWishlist({{ product.id }}, this)"
+              id="detail-wishlist-btn">
+        {% if in_wishlist %}❤️ Wishlisted{% else %}🤍 Wishlist{% endif %}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- RELATED PRODUCTS -->
+{% if related %}
+<section class="section">
+  <div class="section-title">Related Products</div>
+  <div class="product-grid" style="margin-top:16px;">
+    {% for product in related %}{% include 'store/includes/product_card.html' %}{% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<!-- REVIEWS -->
+<div class="page-container">
+  <div class="card">
+    <h2>Customer Reviews</h2>
+    {% for review in reviews %}
+    <div style="border-bottom:1px solid var(--border);padding:16px 0;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+        <strong>{{ review.user.username }}</strong>
+        <span style="color:#f4a400;">{% for i in "12345" %}{% if forloop.counter <= review.rating %}★{% else %}☆{% endif %}{% endfor %}</span>
+      </div>
+      <p style="color:var(--text-light);font-size:.9rem;">{{ review.comment }}</p>
+    </div>
+    {% empty %}
+    <p style="color:var(--text-light);">No reviews yet. Be the first!</p>
+    {% endfor %}
+
+    {% if user.is_authenticated %}
+    <div style="margin-top:20px;">
+      <h3 style="font-size:1rem;margin-bottom:12px;">Write a Review</h3>
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label>Rating</label>
+          {{ review_form.rating }}
+        </div>
+        <div class="form-group">
+          <label>Comment</label>
+          {{ review_form.comment }}
+        </div>
+        <button type="submit" class="btn-primary" style="width:auto;padding:10px 24px;">Submit Review</button>
+      </form>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+

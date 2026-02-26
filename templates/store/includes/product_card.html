@@ -1,0 +1,38 @@
+{% load static %}
+<div class = "product-card">
+  {% if product.discount %}
+  <div class = "discount-badge">{{ product.discount }}% OFF</div>
+  {% endif %}
+
+  <button class   = "wishlist-btn {% if request.user.is_authenticated %}{% endif %}"
+          onclick = "toggleWishlist({{ product.id }}, this)"
+          title = "Add to wishlist">❤️</button>
+
+  <a href = "{% url 'product_detail' product.id %}">
+    <div class = "product-img-wrap">
+      {% if product.image %}
+      <img src = "{{ product.image.url }}" alt = "{{ product.name }}" loading = "lazy" />
+      {% else %}
+      <span style = "font-size:3.5rem;">🛒</span>
+      {% endif %}
+    </div>
+  </a>
+
+  <div class = "product-info">
+    <a href="{% url 'product_detail' product.id %}">
+      <div class = "p-name">{{ product.name }}</div>
+    </a>
+    <div class = "p-price">
+      ₹{{ product.discounted_price }}
+      {% if product.discount %}<span class = "original">₹{{ product.price }}</span>{% endif %}
+    </div>
+
+    <div class = "add-area">
+      {% if product.in_stock %}
+      <button class = "btn-add" onclick="addToCart({{ product.id }}, this)">Add</button>
+      {% else %}
+      <button class = "btn-add out-of-stock" disabled>Out of Stock</button>
+      {% endif %}
+    </div>
+  </div>
+</div>

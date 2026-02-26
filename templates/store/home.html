@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}QuickCart – Groceries in Minutes{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<div class = "hero">
+  <div class = "hero-text">
+    <h1>Groceries delivered in<br><span>10 minutes!</span></h1>
+    <p>Fresh produce, dairy, snacks, beverages & more — at your doorstep, instantly.</p>
+    <a href = "{% url 'product_list' %}" class = "hero-badge">
+      Shop Now <span>10 MIN</span>
+    </a>
+  </div>
+  <div class = "hero-emoji">🛒</div>
+</div>
+
+<!-- CATEGORIES -->
+<section class = "section">
+  <div class = "section-header">
+    <div class = "section-title">Shop by Category</div>
+    <a href = "{% url 'product_list' %}" class = "view-all">View All →</a>
+  </div>
+  <div class = "category-grid">
+    {% for cat in categories %}
+    <a href = "{% url 'category_products' cat.slug %}" class = "category-card">
+      {% if cat.image %}
+        <img src = "{{ cat.image.url }}" alt = "{{ cat.name }}" />
+      {% else %}
+        <span class = "cat-emoji">🛍️</span>
+      {% endif %}
+      <span>{{ cat.name }}</span>
+    </a>
+    {% empty %}
+    <!-- Default categories for demo -->
+    {% for emoji, name in demo_cats %}
+    <div class = "category-card">
+      <span class = "cat-emoji">{{ emoji }}</span>
+      <span>{{ name }}</span>
+    </div>
+    {% endfor %}
+    {% endfor %}
+  </div>
+</section>
+
+<!-- BEST SELLERS -->
+{% if best_sellers %}
+<section class = "section" style = "background:var(--white);padding-top:32px;padding-bottom:32px;">
+  <div class = "section-header">
+    <div class = "section-title">🔥 Best Sellers</div>
+    <a href = "{% url 'product_list' %}" class = "view-all">View All →</a>
+  </div>
+  <div class = "product-grid">
+    {% for product in best_sellers %}{% include 'store/includes/product_card.html' %}{% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<!-- OFFERS -->
+{% if offers %}
+<section class = "section">
+  <div class = "section-header">
+    <div class = "section-title">🏷️ Special Offers</div>
+    <a href = "{% url 'product_list' %}" class = "view-all">View All →</a>
+  </div>
+  <div class = "product-grid">
+    {% for product in offers %}{% include 'store/includes/product_card.html' %}{% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<!-- RECENTLY ADDED -->
+{% if recent_products %}
+<section class = "section" style = "background:var(--white);padding-top:32px;padding-bottom:32px;">
+  <div class = "section-header">
+    <div class = "section-title">🆕 Newly Added</div>
+    <a href = "{% url 'product_list' %}" class = "view-all">View All →</a>
+  </div>
+  <div class = "product-grid">
+    {% for product in recent_products %}{% include 'store/includes/product_card.html' %}{% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<!-- EMPTY STATE -->
+{% if not best_sellers and not offers and not recent_products %}
+<section class = "section">
+  <div class = "empty-state">
+    <div class = "empty-icon">🏪</div>
+    <h3>Store is getting ready!</h3>
+    <p>Products will appear here once the admin adds them. Login to the admin panel to add products.</p>
+    <a href = "/admin/" class = "btn-go-shop">Go to Admin Panel</a>
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}
+
+
+
+
+

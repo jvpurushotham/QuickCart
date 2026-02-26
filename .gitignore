@@ -1,0 +1,8 @@
+quickcart_venv/
+venv/
+media/
+db.sqlite3
+__pycache__/
+*.pyc
+.env
+.DS_Store

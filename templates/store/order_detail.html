@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}Order #{{ order.id }} – QuickCart{% endblock %}
+
+{% block content %}
+<div class = "page-container">
+  <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;">
+    <a href="{% url 'order_list' %}" style="color:var(--primary-dark);font-weight:600;">← Back to Orders</a>
+    <h1 style="font-size:1.4rem;font-weight:800;">Order #{{ order.id }}</h1>
+    <span class = "order-status status-{{ order.status }}">{{ order.get_status_display }}</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div class = "card">
+      <h2>📍 Delivery Address</h2>
+      {% if order.address %}
+      <p>{{ order.address.house_no }}, {{ order.address.street }}</p>
+      <p>{{ order.address.city }} – {{ order.address.pincode }}</p>
+      {% endif %}
+    </div>
+
+    <div class = "card">
+      <h2>⚡ Delivery Info</h2>
+      <p><strong>Estimated:</strong> {{ order.estimated_delivery }}</p>
+      <p style="margin-top:8px;"><strong>Placed on:</strong> {{ order.created_at|date:"d M Y, H:i" }}</p>
+    </div>
+  </div>
+
+  <div class = "card" style="margin-top:20px;">
+    <h2>📦 Items Ordered</h2>
+    <table class = "table">
+
+      <thead>
+        <tr><th>Product</th><th>Price</th><th>Qty</th><th>Subtotal</th></tr>
+      </thead>
+
+      <tbody>
+        
+        {% for item in order.items.all %}
+        <tr>
+          <td>{{ item.product.name }}</td>
+          <td>₹{{ item.price }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>₹{{ item.subtotal }}</td>
+        </tr>
+        {% endfor %}
+      
+      </tbody>
+
+    </table>
+  </div>
+
+  <div class = "card" style = "margin-top:20px;">
+    <h2>💰 Bill Summary</h2>
+    <div class = "summary-row"><span>Item Total</span><span>₹{{ order.total_price|add:order.discount_amount }}</span></div>
+    <div class = "summary-row"><span>Delivery</span><span style="color:var(--green);">FREE</span></div>
+    {% if order.discount_amount %}
+    <div class = "summary-row" style="color:var(--green);"><span>Discount</span><span>−₹{{ order.discount_amount }}</span></div>
+    {% endif %}
+    <div class = "summary-row total"><span>Total Paid</span><span>₹{{ order.total_price }}</span></div>
+  </div>
+</div>
+{% endblock %}
+
+
+
+
+
+
