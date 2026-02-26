@@ -2,6 +2,8 @@
 
 A full-stack, Blinkit-inspired grocery delivery web application built with **Django + Vanilla JS**.
 
+### Demo Link: https://quickcart-bhq2.onrender.com   
+
 ---
 
 ## 🚀 Quick Start
