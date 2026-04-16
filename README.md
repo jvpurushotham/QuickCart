@@ -1,4 +1,4 @@
-# ⚡ QuickCart – Instant Grocery Delivery Web App
+# QuickCart – Instant Grocery Delivery Web App
 
 A full-stack, Blinkit-inspired grocery delivery web application built with **Django + Vanilla JS**.
 
@@ -6,7 +6,7 @@ A full-stack, Blinkit-inspired grocery delivery web application built with **Dja
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Install dependencies
 ```bash
@@ -36,14 +36,14 @@ python manage.py runserver
 
 ---
 
-## ✅ Features
+## Features
 
-### 🔐 Authentication
+### Authentication
 - User Registration & Login
 - Session-based auth with Django
 - Profile page with order history
 
-### 🛍️ Product Management
+### Product Management
 - Categories & Subcategories
 - Product listing with pagination
 - Real-time search (Fetch API)
@@ -51,30 +51,30 @@ python manage.py runserver
 - Stock management
 - Discount badges
 
-### 🛒 Cart System
+### Cart System
 - Add / Remove items
 - +/- quantity buttons (AJAX – no page reload)
 - Auto price update
 - Cart persisted per user in DB
 
-### ❤️ Wishlist
+### Wishlist
 - Heart icon toggle (AJAX)
 - Dedicated wishlist page
 - Count badge in navbar
 
-### 💳 Checkout & Orders
+### Checkout & Orders
 - Address management (add/select multiple)
 - Coupon system (WELCOME20, SAVE50)
 - Order placement with stock deduction
 - Order status tracking (Pending → Confirmed → Delivered)
 - Estimated delivery time display
 
-### 🎛️ Admin Panel
+### Admin Panel
 - Manage Products, Categories, Orders, Users
 - Inline order items editing
 - Order status update
 
-### 💡 UI/UX
+### UI/UX
 - White & Yellow QuickCart theme
 - Responsive design (mobile-friendly)
 - Toast notifications for all cart/wishlist actions
@@ -83,7 +83,7 @@ python manage.py runserver
 
 ---
 
-## 🗂️ Project Structure
+## Project Structure
 
 ```
 quickcart/
@@ -125,7 +125,7 @@ quickcart/
 
 ---
 
-## 🗄️ Database Models
+## Database Models
 
 | Model | Fields |
 |---|---|
@@ -140,7 +140,7 @@ quickcart/
 
 ---
 
-## 🔌 API Endpoints
+## API Endpoints
 
 | Method | URL | Description |
 |---|---|---|
@@ -154,13 +154,13 @@ All return JSON. CSRF protected.
 
 ---
 
-## 🎟️ Demo Coupons
+## Demo Coupons
 - `WELCOME20` – 20% off on orders ₹100+
 - `SAVE50` – 10% off on orders ₹500+
 
 ---
 
-## 🛡️ Security
+## Security
 - CSRF tokens on all forms and AJAX
 - Login required for cart/checkout/wishlist
 - Django password hashing
@@ -168,7 +168,7 @@ All return JSON. CSRF protected.
 
 ---
 
-## 🔧 Tech Stack
+## Tech Stack
 - **Backend:** Django 4.2 (Python)
 - **Frontend:** HTML5, CSS3, Vanilla JS (Fetch API)
 - **Database:** SQLite (switch to MySQL by updating settings.py)
