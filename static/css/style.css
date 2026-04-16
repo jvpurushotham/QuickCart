@@ -294,7 +294,7 @@ a { text-decoration: none; color: inherit; }
 .auth-card { background: var(--white); border-radius: 16px; box-shadow: var(--shadow-hover); padding: 40px; width: 100%; max-width: 420px; }
 .auth-card h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 6px; }
 .auth-card p { color: var(--text-light); margin-bottom: 24px; }
-.form-control { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 10px; font-size: .95rem; outline: none; margin-bottom: 4px; transition: border-color .2s; }
+.form-control { width: 100%; padding: 14px 16px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 1rem;  }
 .form-control:focus { border-color: var(--primary); }
 .form-group { margin-bottom: 16px; }
 .form-group label { font-size: .88rem; font-weight: 600; display: block; margin-bottom: 6px; }
