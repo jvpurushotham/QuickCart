@@ -19,7 +19,7 @@ INSTALLED_APPS = [
     
     'store',
     'widget_tweaks',
-    
+
 ]
 
 MIDDLEWARE = [

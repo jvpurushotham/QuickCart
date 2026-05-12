@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    container_name: quickcart
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - sqlite_data:/app/data
+
+volumes:
+  sqlite_data:
