@@ -4,6 +4,8 @@ A full-stack, Blinkit-inspired grocery delivery web application built with **Dja
 
 ### Demo Link: https://quickcart-bhq2.onrender.com   
 
+### Demo Video Link: https://drive.google.com/file/d/14dGRyUDSBsIkUu0Sim2tOAV26bOcs4nu/view?usp=share_link
+
 ---
 
 ## Quick Start
