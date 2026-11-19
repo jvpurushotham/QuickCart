@@ -12,29 +12,45 @@ A full-stack, Blinkit-inspired grocery delivery web application built with **Dja
 
 ### 1. Install dependencies
 ```bash
-cd quickcart
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 ```
 
-### 2. Run migrations
+### 2. Set local development settings
 ```bash
-python manage.py migrate
+export DJANGO_SECRET_KEY="$(python3 -c 'import secrets; print(secrets.token_urlsafe(50))')"
+export DJANGO_DEBUG=true
 ```
 
-### 3. Seed demo data (categories, products, admin user, coupons)
+### 3. Run migrations
 ```bash
-python manage.py seed_data
+python3 manage.py migrate
 ```
 
-### 4. Start the server
+### 4. Seed demo data (categories, products, coupons)
 ```bash
-python manage.py runserver
+python3 manage.py seed_data
+```
+The seed command creates a demo `admin` / `admin123` account only when
+`DJANGO_DEBUG=true`. Use a unique superuser password for deployments.
+
+### 5. Start the server
+```bash
+python3 manage.py runserver
 ```
 
-### 5. Open in browser
+### 6. Open in browser
 - **App:** http://localhost:8000
 - **Admin Panel:** http://localhost:8000/admin/
-  - Username: `admin` | Password: `admin123`
+
+For deployment, set `DJANGO_DEBUG=false`, provide a unique `DJANGO_SECRET_KEY`,
+set `DJANGO_ALLOWED_HOSTS` to the public hostname, and set
+`DJANGO_CSRF_TRUSTED_ORIGINS` to its HTTPS origin. Keep TLS enabled before
+allowing sign-in or checkout. The default SQLite database is suitable only for
+a single disposable demo instance; use a persistent database and media storage
+for data that must survive instance replacement. Set `DJANGO_SECURE_HSTS_SECONDS`
+only after HTTPS is confirmed working. Disabling secure cookies or SSL redirects
+is acceptable only for a temporary HTTP demo with no real credentials or private
+data; do not use those overrides for production.
 
 ---
 

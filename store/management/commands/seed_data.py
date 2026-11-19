@@ -1,18 +1,20 @@
+from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from store.models import Category, Product, Coupon
 
 
 class Command(BaseCommand):
-    help = 'Seed QuickCart with demo categories, products, coupons, and a superuser'
+    help = 'Seed QuickCart with demo categories, products, and coupons'
 
     def handle(self, *args, **options):
         self.stdout.write('🌱 Seeding QuickCart demo data...\n')
 
-        # Superuser
-        if not User.objects.filter(username='admin').exists():
+        if settings.DEBUG and not User.objects.filter(username='admin').exists():
             User.objects.create_superuser('admin', 'admin@quickcart.com', 'admin123')
-            self.stdout.write('✅ Superuser created: admin / admin123')
+            self.stdout.write('✅ Demo superuser created: admin / admin123')
+        elif not settings.DEBUG:
+            self.stdout.write('Skipping demo superuser creation because DEBUG is disabled.')
 
         # Categories
         cats = [
@@ -78,5 +80,8 @@ class Command(BaseCommand):
         self.stdout.write('✅ Coupons created: WELCOME20, SAVE50')
 
         self.stdout.write('\n🎉 QuickCart demo data seeded successfully!')
-        self.stdout.write('   Admin: http://localhost:8000/admin/ (admin / admin123)')
+        if settings.DEBUG:
+            self.stdout.write('   Admin: http://localhost:8000/admin/ (admin / admin123)')
+        else:
+            self.stdout.write('   Create an admin with: python manage.py createsuperuser')
         self.stdout.write('   App:   http://localhost:8000/')

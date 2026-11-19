@@ -1,13 +1,31 @@
 from pathlib import Path
 import os
 
+from django.core.exceptions import ImproperlyConfigured
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-quickcart-change-me-in-production-2024'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+if not SECRET_KEY:
+    raise ImproperlyConfigured('DJANGO_SECRET_KEY must be set.')
 
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', 'false').strip().lower() in {
+    '1', 'true', 'yes', 'on',
+}
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.environ.get(
+        'DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1'
+    ).split(',')
+    if host.strip()
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS', '').split(',')
+    if origin.strip()
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -59,7 +77,9 @@ WSGI_APPLICATION = 'quickcart.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.environ.get(
+            'DJANGO_SQLITE_PATH', str(BASE_DIR / 'db.sqlite3')
+        ),
     }
 }
 
@@ -75,17 +95,26 @@ TIME_ZONE = 'Asia/Kolkata'
 USE_I18N = True
 USE_TZ = True
 
-DEBUG = True
-
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-STATIC_ROOT = BASE_DIR / "staticfiles"
+MEDIA_ROOT = Path(os.environ.get('DJANGO_MEDIA_ROOT', str(BASE_DIR / 'media')))
+
+SESSION_COOKIE_SECURE = os.environ.get(
+    'DJANGO_SESSION_COOKIE_SECURE', str(not DEBUG)
+).strip().lower() in {'1', 'true', 'yes', 'on'}
+CSRF_COOKIE_SECURE = os.environ.get(
+    'DJANGO_CSRF_COOKIE_SECURE', str(not DEBUG)
+).strip().lower() in {'1', 'true', 'yes', 'on'}
+SECURE_SSL_REDIRECT = os.environ.get(
+    'DJANGO_SECURE_SSL_REDIRECT', str(not DEBUG)
+).strip().lower() in {'1', 'true', 'yes', 'on'}
+SECURE_HSTS_SECONDS = int(os.environ.get('DJANGO_SECURE_HSTS_SECONDS', '0'))
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

@@ -4,6 +4,12 @@ services:
   web:
     build: .
     container_name: quickcart
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?Set DJANGO_SECRET_KEY}
+      DJANGO_DEBUG: ${DJANGO_DEBUG:-true}
+      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS:-localhost,127.0.0.1}
+      DJANGO_SQLITE_PATH: /app/data/db.sqlite3
+      DJANGO_MEDIA_ROOT: /app/media
     ports:
       - "8000:8000"
     volumes:

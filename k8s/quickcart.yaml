@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quickcart
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: quickcart
+  template:
+    metadata:
+      labels:
+        app: quickcart
+    spec:
+      containers:
+        - name: quickcart
+          image: 125992594191.dkr.ecr.ap-south-1.amazonaws.com/quickcart:v1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          readinessProbe:
+            tcpSocket:
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: quickcart
+spec:
+  selector:
+    app: quickcart
+  ports:
+    - port: 80
+      targetPort: 8000
